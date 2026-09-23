@@ -1,0 +1,40 @@
+{
+  "encoder": "answerdotai/ModernBERT-large",
+  "head_layers": 2,
+  "max_len": 512,
+  "head_max_len": 192,
+  "max_prefixes": 6,
+  "act_costs": {
+    "escalate": 0.5
+  },
+  "cost_wrong_act": 3.0,
+  "amp_dtype": "bf16",
+  "model_name": "laya-customer-service-mps",
+  "temperature": [
+    1.0217642784118652,
+    1.2177982330322266,
+    1.7916938066482544
+  ],
+  "training": {
+    "data": "typed_decisions_customer_service_train.jsonl",
+    "decisions": 1500,
+    "epochs": 3,
+    "device": "mps",
+    "seconds": 3298,
+    "freeze_encoder": false,
+    "held_out_before": {
+      "n": 150,
+      "accuracy": 0.3733,
+      "mean_reward": -1.2513,
+      "ece": 0.1981
+    },
+    "held_out_after": {
+      "n": 150,
+      "accuracy": 0.7,
+      "mean_reward": -0.5743,
+      "ece": 0.1194
+    }
+  },
+  "fine_tuned": true,
+  "fine_tuned_from": "../models/laya-english"
+}

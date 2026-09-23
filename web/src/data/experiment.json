@@ -1,14 +1,85 @@
 {
-  "status": "running",
+  "status": "done",
   "title": "Fine-tuning Laya on a laptop: 300 customer-service cases, Apple M3 Max",
   "command": "python finetune.py --data data/typed_decisions_customer_service_train.jsonl --base english --out ../models/customer-service --epochs 3 --device mps --micro-batch 4 --grad-accum 8 --holdout 0.1",
   "setup": "300 training cases (1,500 decisions: 1 choice, 1 score, 3 noul each) from the public LocalLLaMA/typed-decisions benchmark, customer_service workflow. 10% held out inside the run for calibration. A separate 100-case test split (500 decisions) evaluated with a fixed script before and after.",
   "hardware": "Apple M3 Max, 36 GB unified memory, PyTorch 2.14 mps backend, fp32",
-  "before": null,
-  "after": null,
-  "test_before": null,
-  "test_after": null,
-  "minutes": null,
-  "temperatures": null,
-  "notes": []
+  "before": {
+    "n": 150,
+    "accuracy": 0.3733,
+    "mean_reward": -1.2513,
+    "ece": 0.1981
+  },
+  "after": {
+    "n": 150,
+    "accuracy": 0.7,
+    "mean_reward": -0.5743,
+    "ece": 0.1194
+  },
+  "test_before": {
+    "n": 500,
+    "accuracy": 0.376,
+    "mean_reward": -1.1236,
+    "ece": 0.1213
+  },
+  "test_after": {
+    "n": 500,
+    "accuracy": 0.712,
+    "mean_reward": -0.5903,
+    "ece": 0.1178
+  },
+  "minutes": 54,
+  "temperatures": [
+    1.022,
+    1.218,
+    1.792
+  ],
+  "notes": [
+    "Accuracy on the untouched 500-decision test split went from 0.376 to 0.712 after 54 minutes on a laptop GPU with 1,350 training decisions. The upstream checkpoint reached 0.766 with four times the data across all four workflows on two T4s.",
+    "Every primitive moved: choice 0.26 \u2192 0.71, score 0.36 \u2192 0.71, noul 0.65 \u2192 0.73. The base model was worst exactly where option descriptions are domain specific (choice), which is where labelled data helps most.",
+    "Mean proper-score reward roughly halved in magnitude (\u22121.12 \u2192 \u22120.59): the model is not just picking the right option more often, its whole distribution is closer to the teacher's.",
+    "Calibration error barely changed (0.121 \u2192 0.118) because the base checkpoint's shipped temperatures were already refitted per type; the new fit landed at 1.02, 1.22 and 1.79 for choice, score and noul.",
+    "The loss printed by the RLCD loop is noisy by design (it mixes a zero-mean policy-gradient term with a cross-entropy term), so watch the held-out metrics rather than the loss.",
+    "The saved checkpoint is fp32 (1.7 GB). Convert to fp16 for serving if disk matters; answers are unchanged within rounding."
+  ],
+  "test_before_by_type": {
+    "choice": {
+      "n": 200,
+      "accuracy": 0.26,
+      "mean_reward": -1.4161,
+      "ece": 0.1814
+    },
+    "score": {
+      "n": 200,
+      "accuracy": 0.355,
+      "mean_reward": -1.2372,
+      "ece": 0.137
+    },
+    "noul": {
+      "n": 100,
+      "accuracy": 0.65,
+      "mean_reward": -0.3113,
+      "ece": 0.0963
+    }
+  },
+  "test_after_by_type": {
+    "choice": {
+      "n": 200,
+      "accuracy": 0.705,
+      "mean_reward": -0.614,
+      "ece": 0.0511
+    },
+    "score": {
+      "n": 200,
+      "accuracy": 0.71,
+      "mean_reward": -0.7191,
+      "ece": 0.1737
+    },
+    "noul": {
+      "n": 100,
+      "accuracy": 0.73,
+      "mean_reward": -0.2855,
+      "ece": 0.1462
+    }
+  }
 }

@@ -55,3 +55,17 @@ python finetune.py --data data/typed_decisions_customer_service_train.jsonl --ba
 
 The script prints held-out accuracy, mean reward and expected calibration error before and after, fits temperatures, and writes a
 checkpoint folder that `api/app.py` can serve. The experiment we ran with exactly this command is reported on the site's Fine-tune page.
+
+## Result of that exact run (2026-09-23)
+
+Apple M3 Max, `mps`, 300 customer-service cases (1,350 training decisions, 150 held out for calibration), 3 epochs, 54 minutes.
+Evaluated on the separate 100-case test split (500 decisions):
+
+| | base, zero-shot | fine-tuned |
+|---|---|---|
+| accuracy | 0.376 | **0.712** |
+| mean proper-score reward | −1.124 | **−0.590** |
+| ECE | 0.121 | 0.118 |
+| choice / score / noul accuracy | 0.26 / 0.36 / 0.65 | 0.71 / 0.71 / 0.73 |
+
+Reference: the upstream `laya-typed-decisions` checkpoint, trained on all four workflows (6,000 decisions) on 2×T4, scores 0.766.
