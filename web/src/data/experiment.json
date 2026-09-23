@@ -1,0 +1,14 @@
+{
+  "status": "running",
+  "title": "Fine-tuning Laya on a laptop: 300 customer-service cases, Apple M3 Max",
+  "command": "python finetune.py --data data/typed_decisions_customer_service_train.jsonl --base english --out ../models/customer-service --epochs 3 --device mps --micro-batch 4 --grad-accum 8 --holdout 0.1",
+  "setup": "300 training cases (1,500 decisions: 1 choice, 1 score, 3 noul each) from the public LocalLLaMA/typed-decisions benchmark, customer_service workflow. 10% held out inside the run for calibration. A separate 100-case test split (500 decisions) evaluated with a fixed script before and after.",
+  "hardware": "Apple M3 Max, 36 GB unified memory, PyTorch 2.14 mps backend, fp32",
+  "before": null,
+  "after": null,
+  "test_before": null,
+  "test_after": null,
+  "minutes": null,
+  "temperatures": null,
+  "notes": []
+}

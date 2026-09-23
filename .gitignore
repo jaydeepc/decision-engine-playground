@@ -1,0 +1,20 @@
+# python
+.venv/
+__pycache__/
+*.pyc
+# node
+node_modules/
+web/.next/
+web/out/
+web/.vercel/
+.vercel/
+# weights (attached to the GitHub release instead)
+models/laya-english/
+models/*/model.safetensors
+models/.cache/
+# local
+.env
+.env*.local
+*.log
+.DS_Store
+scratch/
