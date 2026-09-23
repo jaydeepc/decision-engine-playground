@@ -88,9 +88,19 @@ export default function Playground() {
   const online = health?.status === "ok";
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 grid lg:grid-cols-[280px_1fr_360px] gap-6 min-h-[calc(100dvh-3rem)]">
+    <div className="mx-auto max-w-7xl px-4 py-4 lg:py-6 grid lg:grid-cols-[280px_1fr_360px] gap-4 lg:gap-6 min-h-[calc(100dvh-3rem)]">
+      {/* Mobile: compact workflow + checkpoint pickers */}
+      <div className="lg:hidden -mx-4 px-4 flex gap-2 overflow-x-auto thin-scroll pb-1">
+        {PRESETS.map((p) => (
+          <button key={p.id} onClick={() => choosePreset(p)} className={`pill shrink-0 ${preset.id === p.id ? "on" : ""}`}>{p.name}</button>
+        ))}
+        <select className="select !w-auto shrink-0 !py-1 !text-[13px] !rounded-full" value={model} onChange={(e) => setModel(e.target.value)} aria-label="Checkpoint">
+          {MODELS.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
+        </select>
+      </div>
+
       {/* Left: workflows */}
-      <aside className="lg:sticky lg:top-16 self-start">
+      <aside className="hidden lg:block lg:sticky lg:top-16 self-start">
         <div className="eyebrow mb-3">Workflow</div>
         <div className="grid gap-1.5">
           {PRESETS.map((p) => (

@@ -5,7 +5,7 @@ import ApiTry from "./ApiTry";
 
 export const metadata = { title: "Build with the API · Decision Engine" };
 
-const BASE = "https://YOUR-DEPLOYMENT.vercel.app";
+const BASE = "https://decision-engine-playground.vercel.app";
 
 export default function Build() {
   const curl = `curl -s ${BASE}/api/v1/systemone \\
